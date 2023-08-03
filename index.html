@@ -2,57 +2,42 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>National Parks Review</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Head section remains unchanged -->
 </head>
 
 <body>
-
+  <!-- Container for the National Park info -->
   <div class="container">
     <div class="row">
-      <div class="col-md-12 jumbotron text-center">
-        <h1>National Parks Dashboard</h1>
-        <p>Use the interactive charts below to explore the dataset</p>
+      <div class="col-md-12">
+        <h2>National Park Info</h2>
+        <p>Select a National Park:</p>
+        <select id="selDataset" onchange="optionChanged(this.value)"></select>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2">
-        <div class="well">
-          <h5>National Park:</h5>
-          <select id="selDataset" onchange="optionChanged(this.value)"></select>
-        </div>
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Park Info</h3>
-          </div>
-          <div id="park-info" class="panel-body"></div>
-        </div>
+      <div class="col-md-4">
+        <div id="park-info"></div>
       </div>
-      <div class="col-md-5">
-        <!-- Placeholder for the activities list (to be added dynamically) -->
+      <div class="col-md-4">
         <div id="activities-list"></div>
       </div>
-      <div class="col-md-5">
-        <!-- Placeholder for the amenities list (to be added dynamically) -->
+      <div class="col-md-4">
         <div id="amenities-list"></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <!-- Placeholder for the bubble chart -->
-        <div id="bubble"></div>
       </div>
     </div>
   </div>
 
-  <!-- Include the required scripts -->
-  <!-- Include the Plotly library (if not already included) -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <!-- Include your updated .js file -->
-  <script src="dashboard.js"></script>
+  <!-- Interactive map section -->
+  <div id="map"></div>
+
+  <!-- Load Leaflet library -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+  <!-- Load app.js script -->
+  <script src="app.js"></script>
+
+  <!-- Additional scripts and styling remain unchanged -->
 </body>
 
 </html>

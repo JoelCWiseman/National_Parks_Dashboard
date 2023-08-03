@@ -1,12 +1,4 @@
-// app.js (formerly dashboard.js)
-// Fetch the API key from the config.js file
-// Make sure the config.js file is loaded before this script
-const scriptTag = document.querySelector('script[src*="app.js"]');
-const pathArray = scriptTag.src.split('/');
-const configPath = pathArray.slice(0, pathArray.length - 1).join('/');
-const script = document.createElement('script');
-script.src = `${configPath}/config.js`;
-document.head.appendChild(script);
+const PARKS_API_URL = "http://localhost:5000/api/parks";
 
 // Function to fetch data from the Flask API
 function fetchData(url) {
@@ -17,32 +9,44 @@ function fetchData(url) {
     });
 }
 
-// Update the URLs to use the Flask API endpoints
-const PARKS_API_URL = "http://localhost:5000/api/parks";
-// ... other URLs for activities and amenities if needed
-
-// Function to build the metadata panel (Park Info)
+// Function to build the park info container
 function buildParkInfo(parkCode) {
-  const url = `${PARKS_API_URL}?parkCode=${parkCode}`;
-  fetchData(url).then((data) => {
-    // Code to handle the data and build the Park Info panel
-  });
+  fetchData(`${PARKS_API_URL}/${parkCode}`)
+    .then((data) => {
+      const park = data.data;
+      const infoContainer = d3.select("#park-info");
+      infoContainer.html("");
+      infoContainer.append("h3").text(park.fullName);
+      infoContainer.append("p").text(`State: ${park.stateCode}`);
+      infoContainer.append("p").text(`Latitude: ${park.latitude}`);
+      infoContainer.append("p").text(`Longitude: ${park.longitude}`);
+    });
 }
 
-// Function to fetch and display the activities list for the selected National Park
+// Function to build the activities list
 function buildActivitiesList(parkCode) {
-  const url = `${ACTIVITIES_API_URL}?parkCode=${parkCode}`;
-  fetchData(url).then((data) => {
-    // Code to handle the data and build the Activities list
-  });
+  fetchData(`${PARKS_API_URL}/${parkCode}/activities`)
+    .then((data) => {
+      const activities = data.data;
+      const activitiesList = d3.select("#activities-list");
+      activitiesList.html("");
+      activitiesList.append("h4").text("Activities Available:");
+      const listItems = activities.map(activity => `<li>${activity}</li>`);
+      activitiesList.append("ul").html(listItems.join(""));
+    });
 }
 
-// Function to fetch and display the amenities list for the selected National Park
+// Function to build the amenities list
 function buildAmenitiesList(parkCode) {
-  const url = `${AMENITIES_API_URL}?parkCode=${parkCode}`;
-  fetchData(url).then((data) => {
-    // Code to handle the data and build the Amenities list
-  });
+  fetchData(`${PARKS_API_URL}/${parkCode}/amenities`)
+    .then((data) => {
+      const amenities = data.data;
+      const amenitiesList = d3.select("#amenities-list");
+      amenitiesList.html("");
+      amenitiesList.append("h4").text("Amenities Available:");
+      const listItems = amenities.map(amenity => `<li>${amenity}</li>`);
+      amenitiesList.append("ul").html(listItems.join(""));
+    });
 }
 
 // Function to initialize the dashboard
@@ -51,8 +55,7 @@ function init() {
   let selector = d3.select("#selDataset");
 
   // Use fetch() to fetch the data from the parks API
-  fetch(PARKS_API_URL)
-    .then((response) => response.json())
+  fetchData(PARKS_API_URL)
     .then((data) => {
       let parks = data.data;
 
@@ -71,6 +74,27 @@ function init() {
     });
 }
 
+// Function to initialize the interactive map
+function initMap(parks) {
+  const map = L.map('map').setView([39.8283, -98.5795], 4); // Set initial map view to the USA
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // Add markers for each park
+  parks.forEach(park => {
+    const marker = L.circleMarker([park.latitude, park.longitude]).addTo(map);
+    marker.bindPopup(`<b>${park.fullName}</b><br>Latitude: ${park.latitude}<br>Longitude: ${park.longitude}`);
+  });
+}
+
+// Fetch park data and initialize the map
+fetchData(PARKS_API_URL)
+  .then(data => {
+    const parks = data.data;
+    initMap(parks);
+  });
 // Function to handle a change in the dropdown selection
 function optionChanged(newParkCode) {
   // Fetch new data each time a new park is selected
