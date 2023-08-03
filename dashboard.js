@@ -1,3 +1,4 @@
+// app.js (formerly dashboard.js)
 // Fetch the API key from the config.js file
 // Make sure the config.js file is loaded before this script
 const scriptTag = document.querySelector('script[src*="app.js"]');
@@ -7,44 +8,39 @@ const script = document.createElement('script');
 script.src = `${configPath}/config.js`;
 document.head.appendChild(script);
 
-// Function to fetch data from the API with the API key in the headers
-function fetchDataWithApiKey(url) {
-  return fetch(url, {
-    headers: {
-      "X-Api-Key": API_KEY,
-    },
-  })
+// Function to fetch data from the Flask API
+function fetchData(url) {
+  return fetch(url)
     .then((response) => response.json())
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
 }
 
-// Update the URLs to use the provided APIs
-const PARKS_API_URL = "https://developer.nps.gov/api/v1/parks";
-const ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks";
-const AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities";
+// Update the URLs to use the Flask API endpoints
+const PARKS_API_URL = "http://localhost:5000/api/parks";
+// ... other URLs for activities and amenities if needed
 
 // Function to build the metadata panel (Park Info)
 function buildParkInfo(parkCode) {
-  const url = `${PARKS_API_URL}?api_key=${API_KEY}&parkCode=${parkCode}`;
-  fetchDataWithApiKey(url).then((data) => {
+  const url = `${PARKS_API_URL}?parkCode=${parkCode}`;
+  fetchData(url).then((data) => {
     // Code to handle the data and build the Park Info panel
   });
 }
 
 // Function to fetch and display the activities list for the selected National Park
 function buildActivitiesList(parkCode) {
-  const url = `${ACTIVITIES_API_URL}?api_key=${API_KEY}&parkCode=${parkCode}`;
-  fetchDataWithApiKey(url).then((data) => {
+  const url = `${ACTIVITIES_API_URL}?parkCode=${parkCode}`;
+  fetchData(url).then((data) => {
     // Code to handle the data and build the Activities list
   });
 }
 
 // Function to fetch and display the amenities list for the selected National Park
 function buildAmenitiesList(parkCode) {
-  const url = `${AMENITIES_API_URL}?api_key=${API_KEY}&parkCode=${parkCode}`;
-  fetchDataWithApiKey(url).then((data) => {
+  const url = `${AMENITIES_API_URL}?parkCode=${parkCode}`;
+  fetchData(url).then((data) => {
     // Code to handle the data and build the Amenities list
   });
 }
