@@ -1,4 +1,4 @@
-const PARKS_API_URL = "http://localhost:5000/api/parks";
+const PARKS_API_URL = "http://localhost:8000/api/parks";
 
 // Function to fetch data from the Flask API
 function fetchData(url) {
