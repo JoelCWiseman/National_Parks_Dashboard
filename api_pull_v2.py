@@ -9,9 +9,9 @@ app = Flask(__name__)
 API_KEY = "yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw"
 
 # Base URLs for the APIs
-PARKS_API_URL = "https://developer.nps.gov/api/v1/parks"
-ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks"
-AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities"
+PARKS_API_URL = "https://developer.nps.gov/api/v1/parks?api_key=API_KEY"
+ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks?api_key=API_KEY"
+AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities?api_key=API_KEY"
 
 # Function to fetch data from the NPS API
 def fetch_data(api_url):

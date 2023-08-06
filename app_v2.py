@@ -48,7 +48,6 @@ if not os.path.exists("activities.db"):
 if not os.path.exists("amenities.db"):
     create_amenities_database()
 
-# Rest of the code remains the same...
 @app.route('/')
 def index():
     return render_template("index.html")
