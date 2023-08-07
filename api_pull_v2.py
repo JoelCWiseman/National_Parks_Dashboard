@@ -6,7 +6,7 @@ import logging
 app = Flask(__name__)
 
 # Your API key
-API_KEY = "yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw"
+API_KEY = 
 
 # Base URLs for the APIs
 PARKS_API_URL = "https://developer.nps.gov/api/v1/parks?api_key=API_KEY"
