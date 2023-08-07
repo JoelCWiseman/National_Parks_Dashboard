@@ -58,7 +58,7 @@ def create_activities_db():
         )
     ''')
 
-    parks_data = fetch_data(PARKS_API_URL)
+    parks_data = fetch_data(ACTIVITIES_API_URL)
 
     if "data" in parks_data:
         for park in parks_data["data"]:
@@ -88,7 +88,7 @@ def create_amenities_db():
         )
     ''')
 
-    parks_data = fetch_data(PARKS_API_URL)
+    parks_data = fetch_data(AMENITIES_API_URL)
 
     if "data" in parks_data:
         for park in parks_data["data"]:
