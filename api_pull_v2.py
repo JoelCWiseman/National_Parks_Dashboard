@@ -1,17 +1,28 @@
 import requests
 from flask import Flask, jsonify
+import sqlalchemy
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, func
 import sqlite3
 import logging
+import urllib.request, json
 
 app = Flask(__name__)
 
 # Your API key
-API_KEY = "yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw"
+API_KEY = "zyK5oR9gHh0c5ApgkPsAUoAX7KsfneUujZESuLxi"
 
 # Base URLs for the APIs
-PARKS_API_URL = "https://developer.nps.gov/api/v1/parks"
-ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks"
-AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities"
+PARKS_API_URL = "https://developer.nps.gov/api/v1/parks?api_key=API_KEY"
+ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks?api_key=API_KEY"
+AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities?api_key=API_KEY"
+
+
+#park = 'acad'
+#endpoint = "https://developer.nps.gov/api/v1/parks?parkCode=" + park
+HEADERS = {"Authorization":"zyK5oR9gHh0c5ApgkPsAUoAX7KsfneUujZESuLxi"}
+req = urllib.request.Request(PARKS_API_URL,headers=HEADERS)
 
 # Function to fetch data from the NPS API
 def fetch_data(api_url):
