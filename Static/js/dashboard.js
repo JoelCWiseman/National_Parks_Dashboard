@@ -1,4 +1,4 @@
-const PARKS_API_URL = "http://localhost:5000/api/parks";
+const PARKS_API_URL = "/api/parks";
 
 // Function to fetch data from the Flask API
 function fetchData(url) {
@@ -11,9 +11,14 @@ function fetchData(url) {
 
 // Function to build the park info container
 function buildParkInfo(parkCode) {
-  fetchData(`${PARKS_API_URL}/${parkCode}`)
+  // fetchData(`${PARKS_API_URL}/${parkCode}`)
+  fetchData(`${PARKS_API_URL}`)
     .then((data) => {
-      const park = data.data;
+      
+      let choice = d3.select('select').node().value;
+      const park = data.data.filter(obj=> obj.parkCode == choice)[0];
+
+      console.log(park);
       const infoContainer = d3.select("#park-info");
       infoContainer.html("");
       infoContainer.append("h3").text(park.fullName);
@@ -58,7 +63,7 @@ function init() {
   fetchData(PARKS_API_URL)
     .then((data) => {
       let parks = data.data;
-
+      
       // Populate the dropdown options with the park names
       parks.forEach((park) => {
         selector.append("option")
