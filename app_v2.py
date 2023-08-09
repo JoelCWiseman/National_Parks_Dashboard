@@ -1,7 +1,8 @@
 import os
 import sqlite3
-from flask import Flask, jsonify, render_template
+from flask import jsonify, render_template
 
+import Flask
 app = Flask(__name__)
 
 # Function to create and populate the parks database
