@@ -6,12 +6,13 @@ import logging
 app = Flask(__name__)
 
 # Your API key
-API_KEY = "zyK5oR9gHh0c5ApgkPsAUoAX7KsfneUujZESuLxi"
+# Old one#API_KEY = "zyK5oR9gHh0c5ApgkPsAUoAX7KsfneUujZESuLxi"
+API_KEY = "rH5mHAFCMbzFjU142JRqAjKKYKWhP1gtphp9MRMS"
 
 # Base URLs for the APIs
-PARKS_API_URL = "https://developer.nps.gov/api/v1/parks?"
-ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks?"
-AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities?"
+PARKS_API_URL = "https://developer.nps.gov/api/v1/parks?limit=100"
+ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks?limit=100"
+AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities?limit=100"
 
 # Function to fetch data from the NPS API
 def fetch_data(api_url):
@@ -43,7 +44,8 @@ def create_parks_db():
         parks_data = fetch_data(PARKS_API_URL)
 
         if parks_data and "data" in parks_data:
-            for park in parks_data["data"][:100]:
+            #for park in parks_data["data"][:100]:
+            for park in parks_data["data"]:
                 cursor.execute('''
                     INSERT OR IGNORE INTO parks (parkCode, fullName, stateCode, latitude, longitude)
                     VALUES (?, ?, ?, ?, ?)
@@ -71,7 +73,8 @@ def create_activities_db():
         parks_data = fetch_data(PARKS_API_URL)
 
         if parks_data and "data" in parks_data:
-            for park in parks_data["data"][:100]:
+            #for park in parks_data["data"][:100]:
+            for park in parks_data["data"]:
                 park_code = park["parkCode"]
                 activities_data = fetch_data(f"{ACTIVITIES_API_URL}/{park_code}")
                 if activities_data and "data" in activities_data:
@@ -104,7 +107,8 @@ def create_amenities_db():
         parks_data = fetch_data(PARKS_API_URL)
 
         if parks_data and "data" in parks_data:
-            for park in parks_data["data"][:200]:
+            #for park in parks_data["data"][:200]:
+            for park in parks_data["data"]:
                 park_code = park["parkCode"]
                 amenities_data = fetch_data(f"{AMENITIES_API_URL}/{park_code}")
                 if amenities_data and "data" in amenities_data:

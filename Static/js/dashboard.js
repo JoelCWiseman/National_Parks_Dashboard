@@ -19,6 +19,7 @@ function buildParkInfo(parkCode) {
       const park = data.data.filter(obj=> obj.parkCode == choice)[0];
 
       console.log(park);
+      console.log(data);
       const infoContainer = d3.select("#park-info");
       infoContainer.html("");
       infoContainer.append("h3").text(park.fullName);

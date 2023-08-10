@@ -1,2 +1,2 @@
 //config.js
-const API_KEY = "yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw";
+const API_KEY = "rH5mHAFCMbzFjU142JRqAjKKYKWhP1gtphp9MRMS"
