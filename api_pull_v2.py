@@ -43,7 +43,7 @@ def create_parks_db():
         parks_data = fetch_data(PARKS_API_URL)
 
         if parks_data and "data" in parks_data:
-            for park in parks_data["data"]:
+            for park in parks_data["data"][:100]:
                 cursor.execute('''
                     INSERT OR IGNORE INTO parks (parkCode, fullName, stateCode, latitude, longitude)
                     VALUES (?, ?, ?, ?, ?)
@@ -71,7 +71,7 @@ def create_activities_db():
         parks_data = fetch_data(PARKS_API_URL)
 
         if parks_data and "data" in parks_data:
-            for park in parks_data["data"]:
+            for park in parks_data["data"][:100]:
                 park_code = park["parkCode"]
                 activities_data = fetch_data(f"{ACTIVITIES_API_URL}/{park_code}")
                 if activities_data and "data" in activities_data:
@@ -104,7 +104,7 @@ def create_amenities_db():
         parks_data = fetch_data(PARKS_API_URL)
 
         if parks_data and "data" in parks_data:
-            for park in parks_data["data"]:
+            for park in parks_data["data"][:200]:
                 park_code = park["parkCode"]
                 amenities_data = fetch_data(f"{AMENITIES_API_URL}/{park_code}")
                 if amenities_data and "data" in amenities_data:
