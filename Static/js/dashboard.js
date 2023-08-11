@@ -1,5 +1,7 @@
 const PARKS_API_URL = "/api/parks";
 
+//ScrollReveal().reveal('.container');
+
 // Function to fetch data from the Flask API
 function fetchData(url) {
   return fetch(url)
@@ -82,11 +84,13 @@ function init() {
 
 // Function to initialize the interactive map
 function initMap(parks) {
-  const map = L.map('map').setView([39.8283, -98.5795], 4); // Set initial map view to the USA
+  let map = L.map('map').setView([39.8283, -98.5795], 4); // Set initial map view to the USA
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
+
+ 
 
   // Add markers for each park
   parks.forEach(park => {
@@ -99,9 +103,10 @@ function initMap(parks) {
 fetchData(PARKS_API_URL)
   .then(data => {
     const parks = data.data;
+    console.log(data.data)
     initMap(parks);
-  });
-// Function to handle a change in the dropdown selection
+  }); 
+//Function to handle a change in the dropdown selection
 function optionChanged(newParkCode) {
   // Fetch new data each time a new park is selected
   buildParkInfo(newParkCode);
