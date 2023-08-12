@@ -7,14 +7,15 @@ app = Flask(__name__)
 
 # Your API key
 # Old one#API_KEY = "zyK5oR9gHh0c5ApgkPsAUoAX7KsfneUujZESuLxi"
-API_KEY = "Jbyqm6kf6txCRjvjfz6NMXB5OCdtJ4gV9KhlfgPW"
-#API_KEY = "yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw"
+#API_KEY = "Jbyqm6kf6txCRjvjfz6NMXB5OCdtJ4gV9KhlfgPW"
+API_KEY = "yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw"
 
 # Base URLs for the APIs
 PARKS_API_URL = "https://developer.nps.gov/api/v1/parks?limit=450"
 #ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks?limit=450"
 #AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities?limit=450"
-EVENTS_API_URL = "https://developer.nps.gov/api/v1/events?limit=450"
+CAMPGROUNDS_API_URL = "https://developer.nps.gov/api/v1/campgrounds?limit=450"
+#EVENTS_API_URL = "https://developer.nps.gov/api/v1/events?limit=450"
 
 # Function to fetch data from the NPS API
 def fetch_data(api_url):
@@ -126,43 +127,74 @@ def create_parks_db():
   #  except sqlite3.Error as e:
    #     logging.error(f"An error occurred while creating the amenities database: {str(e)}")
 
-# Function to create the events database
-def create_events_db():
+# Function to create the campgrounds database
+def create_campgrounds_db():
     try:
-        connection = sqlite3.connect("events.db")
+        connection = sqlite3.connect("campgrounds.db")
         cursor = connection.cursor()
 
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS events (
-                parkCode TEXT,
-                category TEXT,
-                FOREIGN KEY (parkCode) REFERENCES parks (parkCode)
+            CREATE TABLE IF NOT EXISTS campgrounds (
+                parkCode TEXT PRIMARY KEY,
+                campgroundName TEXT,
+                description TEXT,
+                campsites INTEGER
             )
         ''')
 
-        parks_data = fetch_data(PARKS_API_URL)
+        parks_data = fetch_data(CAMPGROUNDS_API_URL)
 
         if parks_data and "data" in parks_data:
-            #for park in parks_data["data"][:200]:
             for park in parks_data["data"]:
                 park_code = park["parkCode"]
-                events_data = fetch_data(f"{EVENTS_API_URL}/{park_code}")
-                if events_data and "data" in events_data:
-                    events = [event["category"] for event in events_data["data"]]
-                    for event in events:
-                        cursor.execute('''
-                            INSERT INTO events (parkCode, category)
-                            VALUES (?, ?)
-                        ''', (park_code, event))
+                cursor.execute('''
+                    INSERT OR IGNORE INTO campgrounds (parkCode)
+                    VALUES (?)
+                ''', (park_code,))
 
         connection.commit()
         connection.close()
     except sqlite3.Error as e:
-        logging.error(f"An error occurred while creating the amenities database: {str(e)}")
+        logging.error(f"An error occurred while creating the campgrounds database: {str(e)}")
+
+# Function to create the events database
+#def create_events_db():
+ #   try:
+  #      connection = sqlite3.connect("events.db")
+   #     cursor = connection.cursor()
+
+    #    cursor.execute('''
+     #       CREATE TABLE IF NOT EXISTS events (
+      #          parkCode TEXT,
+       #         category TEXT,
+        #        FOREIGN KEY (parkCode) REFERENCES parks (parkCode)
+         #   )
+        #''')
+
+        #parks_data = fetch_data(PARKS_API_URL)
+
+        #if parks_data and "data" in parks_data:
+            #for park in parks_data["data"][:200]:
+         #   for park in parks_data["data"]:
+          #      park_code = park["parkCode"]
+           #     events_data = fetch_data(f"{EVENTS_API_URL}/{park_code}")
+            #    if events_data and "data" in events_data:
+             #       events = [event["category"] for event in events_data["data"]]
+              #      for event in events:
+               #         cursor.execute('''
+                #            INSERT INTO events (parkCode, category)
+                 #           VALUES (?, ?)
+                  #      ''', (park_code, event))
+
+        #connection.commit()
+        #connection.close()
+    #except sqlite3.Error as e:
+     #   logging.error(f"An error occurred while creating the amenities database: {str(e)}")
 
 if __name__ == '__main__':
     logging.basicConfig(filename='api.log', level=logging.ERROR)  # Configure logging to write errors to a log file
     create_parks_db()
    # create_activities_db()
     #create_amenities_db()
-    create_events_db()
+    create_campgrounds_db()  
+   # create_events_db()
