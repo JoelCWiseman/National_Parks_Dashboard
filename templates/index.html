@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>National Parks Overview</title>
-  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
    <!-- Leaflet CSS -->
    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -19,8 +19,15 @@
   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
   crossorigin=""></script>
 
+
+  <!-- Load D3 library -->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  
+  <!-- Load ScrollReveal library -->
+  <!--<script src="https://unpkg.com/scrollreveal"></script>-->
+
   <!-- Our CSS -->
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
 </head>
 
 <body>
@@ -49,15 +56,8 @@
   <!-- Interactive map section -->
   <div id="map"></div>
   
-
-  <!-- Load D3 library -->
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  
-  <!-- Load ScrollReveal library -->
-  <!--<script src="https://unpkg.com/scrollreveal"></script>-->
-
   <!-- Load app.js script -->
-<script src="static/js/dashboard.js"></script>
+<script type="text" src="static/js/dashboard.js"></script>
 </body>
 
 </html>
