@@ -2,6 +2,7 @@ import requests
 from flask import Flask, jsonify
 import sqlite3
 import logging
+import plotly
 
 app = Flask(__name__)
 

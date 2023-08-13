@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import plotly
 from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
@@ -50,6 +51,11 @@ def get_parks():
         parks.append(park_dict)
     return jsonify({"data": parks})
 
+@app.route('/api/parks/<string:park_code>/campgrounds', methods=['GET']) 
+def get_campgrounds(park_code):
+    campgrounds = fetch_campgrounds_for_park(park_code)
+    return jsonify({"data": campgrounds})
+    
 @app.route('/api/parks/<string:park_code>/activities', methods=['GET'])
 def get_activities(park_code):
     activities = fetch_activities_for_park(park_code)

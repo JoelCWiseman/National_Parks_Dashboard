@@ -31,6 +31,44 @@ function buildParkInfo(parkCode) {
     });
 }
 
+// Function to build campground info chart
+function buildCampgroundChart(parkCode) {
+  fetchData(`${PARKS_API_URL}/${parkCode}/campgrounds`)
+    .then((data) => {
+      const campgrounds = data.data;
+	  
+	  let topCampgrounds = campgrounds
+        .sort((a, b) => b.occupancy - a.occupancy)
+        .slice(0, 10);
+
+      let campgroundNames = topCampgrounds.map(campground => campground.name);
+      let campgroundOccupancies = topCampgrounds.map(campground => campground.occupancy);
+
+      // Create the trace for the campground bar chart
+      let barTrace = {
+        x: campgroundOccupancies,
+        y: campgroundNames,
+        text: campgroundNames,
+        type: "bar",
+        orientation: "h"
+      };
+
+      let barData = [barTrace];
+
+      let barLayout = {
+        title: `Campground information - Park ${parkCode}`,
+        margin: { t: 30, l: 150 }
+      };
+
+      // Update the campground chart container
+      let chartContainer = d3.select("#campground-chart");
+      chartContainer.html(""); // Clear existing chart
+      chartContainer.append("div").attr("id", "campground-bar-chart");
+
+      Plotly.newPlot("campground-bar-chart", barData, barLayout);
+    });
+}
+
 // Function to build the activities list
 function buildActivitiesList(parkCode) {
   fetchData(`${PARKS_API_URL}/${parkCode}/activities`)
@@ -112,6 +150,7 @@ function optionChanged(newParkCode) {
   buildParkInfo(newParkCode);
   buildActivitiesList(newParkCode);
   buildAmenitiesList(newParkCode);
+  buildCampgroundChart(newParkCode);
 }
 
 // Initialize the dashboard
