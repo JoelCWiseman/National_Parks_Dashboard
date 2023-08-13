@@ -18,10 +18,9 @@ function buildParkInfo(parkCode) {
     .then((data) => {
       
       let choice = d3.select('select').node().value;
-      const park = data.data.filter(obj=> obj.parkCode == choice)[0];
+      let park = data.data.filter(obj=> obj.parkCode == choice)[0];
 
       console.log(park);
-      console.log(data);
       const infoContainer = d3.select("#park-info");
       infoContainer.html("");
       infoContainer.append("h3").text(park.fullName);
@@ -69,6 +68,43 @@ function buildCampgroundChart(parkCode) {
     });
 }
 
+// Function to make bubble chart
+function buildBubbleChart(parkCode) {
+  fetchData(`${PARKS_API_URL}`)
+    .then((data) => {
+      
+      let choice = d3.select('select').node().value;
+      let park = data.data.filter(obj=> obj.parkCode == choice)[0];
+
+      let { stateCode, parkCode } = park;
+
+      var bubbleChart = {
+        x: stateCode,
+        y: [0, 50, 100, 150, 200, 250, 300, 350, 400, 450],
+        mode: 'markers',
+        marker: {
+          size: [40, 60, 80, 100]
+        }
+      };
+      
+      var data = [bubbleChart];
+      
+      var layout = {
+        title: 'National Parks by State',
+        showlegend: false,
+        height: 600,
+        width: 600
+      };
+      // Update the campground chart container
+      let bubbleContainer = d3.select("#bubble-chart");
+      bubbleContainer.html(""); // Clear existing chart
+      bubbleContainer.append("div").attr("id", "bubble-state-chart");
+      
+      
+      Plotly.newPlot('bubble', data, layout);
+    });
+
+  }
 // Function to build the activities list
 function buildActivitiesList(parkCode) {
   fetchData(`${PARKS_API_URL}/${parkCode}/activities`)
@@ -122,7 +158,7 @@ function init() {
 
 // Function to initialize the interactive map
 function initMap(parks) {
-  let map = L.map('map').setView([39.8283, -98.5795], 4); // Set initial map view to the USA
+  let map = L.map('map').setView([45.8283, -98.5795], 4); // Set initial map view to the USA
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
