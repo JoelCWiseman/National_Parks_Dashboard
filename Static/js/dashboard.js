@@ -55,7 +55,7 @@ function buildCampgroundChart(parkCode) {
       let barData = [barTrace];
 
       let barLayout = {
-        title: `Campground information - Park ${parkCode}`,
+        title: `Campground information`,
         margin: { t: 30, l: 150 }
       };
 
@@ -153,6 +153,7 @@ function init() {
       buildParkInfo(firstParkCode);
       buildActivitiesList(firstParkCode);
       buildAmenitiesList(firstParkCode);
+	  buildCampgroundChart(firstParkCode);
     });
 }
 

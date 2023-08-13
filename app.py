@@ -14,6 +14,15 @@ def fetch_parks_data():
     connection.close()
     return parks_data
 
+# Function to fetch campground data for a specific park
+def fetch_campgrounds_for_park(park_code):
+    connection = sqlite3.connect("campgrounds.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT campgroundName, occupancy FROM campgrounds WHERE parkCode = ?", (park_code,))
+    campgrounds_data = cursor.fetchall()
+    connection.close()
+    return [{"name": campground[0], "occupancy": campground[1]} for campground in campgrounds_data]
+    
 # Function to fetch activities for a specific park
 def fetch_activities_for_park(park_code):
     connection = sqlite3.connect("activities.db")
