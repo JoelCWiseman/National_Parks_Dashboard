@@ -68,28 +68,30 @@ function buildCampgroundChart(parkCode) {
     });
 } */
 
-// Function to make bubble chart
+// Function to make bar chart
 function buildStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)
     .then((data) => {
+      const selectedParkCode = d3.select('select').node().value;
+      const park = data.data.find(obj => obj.parkCode === selectedParkCode);
       
-      let choice = d3.select('select').node().value;
-      let park = data.data.filter(obj=> obj.parkCode == choice)[0];
-      
-      let { stateCode } = park;
-      console.log(stateCode);
-      
+      if (!park) {
+        console.error('Park not found for the given code');
+        return;
+      }
 
-      var stateBarChart = {
-        x: stateCode,
-        y: 0,
+      const { stateCode } = park;
+      
+      const stateBarChart = {
+        x: [stateCode],
+        y: [0],
         type: 'bar',
         orientation: 'v'
-      }
+      };
       
-      var data = [stateBarChart];
+      const data = [stateBarChart];
 
-      var layout = {
+      const layout = {
         xaxis: {
           type: 'category',
           title: 'States',
@@ -100,15 +102,16 @@ function buildStateBarChart(parkCode) {
         }
       };
 
-     // Update the scatter chart container
-      let scatterContainer = d3.select("#scatter");
-      scatterContainer.html(""); // Clear existing chart
-      scatterContainer.append("div").attr("id", "scatter"); 
+      // Clear the existing chart
+      const scatterContainer = d3.select("#b");
+      scatterContainer.selectAll("*").remove();
       
-      
-      Plotly.newPlot('scatter', data, layout);
+      Plotly.newPlot('bar', data, layout);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
     });
-  }
+}
 
 /*/ Function to build the activities list
 function buildActivitiesList(parkCode) {
@@ -176,10 +179,10 @@ function initMap(parks) {
   // Add markers for each park
   parks.forEach(park => {
     const marker = L.circleMarker([park.latitude, park.longitude]).addTo(map);
-    const marker = L.circleMarker([park.latitude, park.longitude]).addTo(map);
-    marker.bindPopup(`<b>${park.fullName}</b><br>Latitude: ${park.latitude}<br>Longitude: ${park.longitude}`);
-  });
-}
+    const googleMapsLink = `https://www.google.com/maps?q=${park.latitude},${park.longitude}`;
+    marker.bindPopup(`<b>${park.fullName}</b><br>Latitude: ${park.latitude}<br>Longitude: ${park.longitude}<br><a href="${googleMapsLink}" target="_blank">Open in Google Maps</a>`);
+});
+
 
 // Fetch park data and initialize the map
 fetchData(PARKS_API_URL)
