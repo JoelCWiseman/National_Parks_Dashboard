@@ -72,33 +72,34 @@ function buildCampgroundChart(parkCode) {
 function buildStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)
     .then((data) => {
-      const selectedParkCode = d3.select('select').node().value;
-      const park = data.data.find(obj => obj.parkCode === selectedParkCode);
+      let selectedParkCode = d3.select('select').node().value;
+      let park = data.data.find(obj => obj.parkCode === selectedParkCode);
       
       if (!park) {
         console.error('Park not found for the given code');
         return;
       }
 
-      const { stateCode } = park;
+      let { stateCode } = park;
       
-      const stateBarChart = {
-        x: [stateCode],
-        y: [0],
+      var stateBarChart = {
+        x: [11,17,9,1,24,33,16,4,34,4,10,12,1,9,4,9,7,4,10,9,6,18,28,6,6,6,12,1,10,
+        9,11,2,10,2,10,18,7,32,9,7,10,25,1,4,8,6,15,18,16,31,6,2,15,4,7,10],
+        y: [stateCode],
         type: 'bar',
-        orientation: 'v'
+        orientation: 'h'
       };
       
-      const data = [stateBarChart];
+      var data = [stateBarChart];
 
-      const layout = {
+      var layout = {
         xaxis: {
-          type: 'category',
-          title: 'States',
+           range: [0, 40],
+          title: 'Number of Parks per State'
         },
         yaxis: {
-          range: [0, 450],
-          title: 'Number of Parks per State'
+           ype: 'category',
+          title: 'States',
         }
       };
 
