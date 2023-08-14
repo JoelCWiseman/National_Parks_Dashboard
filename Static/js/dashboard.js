@@ -68,7 +68,7 @@ function buildCampgroundChart(parkCode) {
     });
 } */
 
-// Function to fetch topics data
+/*// Function to fetch topics data
 function fetchTopics() {
   return fetch('/api/get_topics')
     .then(response => {
@@ -90,15 +90,70 @@ function fetchTopics() {
     .catch(error => {
       console.error('Error fetching topics data:', error);
     });
-}
-  
-// Function to make bar chart
-function buildStateBarChart(parkCode) {
+}*/
+
+// Function to make all states bar chart
+function buildAllStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)
     .then((data) => {
       //this is one way to make the chart where it's all the states at with each dropdown change
-      //let selectedParkCode = d3.select('select').node().value;
-      //let park = data.data.filter(obj => obj.parkCode == selectedParkCode[0]);
+      let selectedParkCode = d3.select('select').node().value;
+      let park = data.data.filter(obj => obj.parkCode == selectedParkCode[0]);
+
+      if (!park) {
+        console.error('Park not found for the given code');
+        return;
+      }
+
+      let { stateCode } = park;
+
+      parkNumber = stateData.map(function (row){
+        return row.amountOfParks
+      });
+      stateNumber = stateData.map(function (row){
+        return row.State
+      });
+      
+      var stateAllBarChart = {
+        x: parkNumber,
+        y: stateNumber,
+        type: 'bar',
+        orientation: 'h'
+      };
+      
+      var data = [stateAllBarChart];
+
+      var layout = {
+        xaxis: {
+           range: [0, 40],
+          title: 'Number of Parks per State'
+        },
+        yaxis: {
+           ype: 'category',
+          title: 'States',
+        }
+      };
+
+      // Update the bar chart container
+      //let barContainer = d3.select("#bar");
+      //barContainer.html(""); // Clear existing chart
+      //barContainer.append("div").attr("id", "bar");
+
+      // Clear the existing chart
+      const scatterContainer = d3.select("#b");
+      scatterContainer.selectAll("*").remove();
+      
+      Plotly.newPlot('topicsList', data, layout);
+    });
+    //.catch((error) => {
+      //console.error('Error fetching data:', error);
+    //});
+};
+  
+// Function to make each state bar chart
+function buildStateBarChart(parkCode) {
+  fetchData(`${PARKS_API_URL}`)
+    .then((data) => {
 
 	//This the another way where the chart will change with the dropdown for the state that is with that park
       let selectedParkCode = d3.select('select').node().value;
@@ -110,10 +165,13 @@ function buildStateBarChart(parkCode) {
       }
 
       let { stateCode } = park;
+
+      parkNumber = stateData.map(function (row){
+        return row.amountOfParks
+      });
       
       var stateBarChart = {
-        x: [11,17,9,1,24,33,16,4,34,4,10,12,1,9,4,9,7,4,10,9,6,18,28,6,6,6,12,1,10,
-        9,11,2,10,2,10,18,7,32,9,7,10,25,1,4,8,6,15,18,16,31,6,2,15,4,7,10],
+        x: parkNumber,
         y: [stateCode],
         type: 'bar',
         orientation: 'h'
@@ -142,11 +200,11 @@ function buildStateBarChart(parkCode) {
       scatterContainer.selectAll("*").remove();
       
       Plotly.newPlot('barState', data, layout);
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
     });
-} 
+    //.catch((error) => {
+      //console.error('Error fetching data:', error);
+    //});
+}; 
 
 /*/ Function to build the activities list
 function buildActivitiesList(parkCode) {
@@ -198,6 +256,7 @@ function init() {
       //buildAmenitiesList(firstParkCode);
 	    //buildCampgroundChart(firstParkCode);
       buildStateBarChart(firstParkCode);
+      buildAllStateBarChart(firstParkCode);
     });
 }
 
@@ -234,6 +293,7 @@ function optionChanged(newParkCode) {
   //buildAmenitiesList(newParkCode);
   //buildCampgroundChart(newParkCode);
   buildStateBarChart(newParkCode);
+  buildAllStateBarChart(newParkCode);
 }; 
 
 // Initialize the dashboard
