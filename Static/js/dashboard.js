@@ -1,6 +1,6 @@
 const PARKS_API_URL = "/api/parks";
 
-//ScrollReveal().reveal('.container');
+
 
 // Function to fetch data from the Flask API
 function fetchData(url) {
@@ -151,7 +151,7 @@ function fetchTopics() {
     //.catch((error) => {
       //console.error('Error fetching data:', error);
     //});
-};
+}; */
   
 // Function to make each state bar chart
 function buildStateBarChart(parkCode) {
@@ -207,7 +207,7 @@ function buildStateBarChart(parkCode) {
     //.catch((error) => {
       //console.error('Error fetching data:', error);
     //});
-}; */
+}; 
 
 /*/ Function to build the activities list
 function buildActivitiesList(parkCode) {
@@ -258,7 +258,7 @@ function init() {
       //buildActivitiesList(firstParkCode);
       //buildAmenitiesList(firstParkCode);
 	    //buildCampgroundChart(firstParkCode);
-      //buildStateBarChart(firstParkCode);
+      buildStateBarChart(firstParkCode);
       //buildAllStateBarChart(firstParkCode);
       fetchTopics(firstParkCode);
     });
@@ -296,7 +296,7 @@ function optionChanged(newParkCode) {
   //buildActivitiesList(newParkCode);
   //buildAmenitiesList(newParkCode);
   //buildCampgroundChart(newParkCode);
-  //buildStateBarChart(newParkCode);
+  buildStateBarChart(newParkCode);
   //buildAllStateBarChart(newParkCode);
   fetchTopics(newParkCode);
 }; 
