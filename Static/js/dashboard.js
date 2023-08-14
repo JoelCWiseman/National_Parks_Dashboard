@@ -68,7 +68,7 @@ function buildCampgroundChart(parkCode) {
     });
 } */
 
-/*// Function to fetch topics data
+// Function to fetch topics data
 function fetchTopics() {
   return fetch('/api/get_topics')
     .then(response => {
@@ -80,6 +80,8 @@ function fetchTopics() {
     .then(data => {
       const topicsList = document.getElementById('topicsList');
 
+      console.log(data);
+
       // Populate the topics list
       data.data.forEach(topic => {
         const listItem = document.createElement('div');
@@ -90,10 +92,11 @@ function fetchTopics() {
     .catch(error => {
       console.error('Error fetching topics data:', error);
     });
-}*/
+} 
+
 
 // Function to make all states bar chart
-function buildAllStateBarChart(parkCode) {
+/*function buildAllStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)
     .then((data) => {
       //this is one way to make the chart where it's all the states at with each dropdown change
@@ -204,7 +207,7 @@ function buildStateBarChart(parkCode) {
     //.catch((error) => {
       //console.error('Error fetching data:', error);
     //});
-}; 
+}; */
 
 /*/ Function to build the activities list
 function buildActivitiesList(parkCode) {
@@ -255,8 +258,9 @@ function init() {
       //buildActivitiesList(firstParkCode);
       //buildAmenitiesList(firstParkCode);
 	    //buildCampgroundChart(firstParkCode);
-      buildStateBarChart(firstParkCode);
-      buildAllStateBarChart(firstParkCode);
+      //buildStateBarChart(firstParkCode);
+      //buildAllStateBarChart(firstParkCode);
+      fetchTopics(firstParkCode);
     });
 }
 
@@ -292,8 +296,9 @@ function optionChanged(newParkCode) {
   //buildActivitiesList(newParkCode);
   //buildAmenitiesList(newParkCode);
   //buildCampgroundChart(newParkCode);
-  buildStateBarChart(newParkCode);
-  buildAllStateBarChart(newParkCode);
+  //buildStateBarChart(newParkCode);
+  //buildAllStateBarChart(newParkCode);
+  fetchTopics(newParkCode);
 }; 
 
 // Initialize the dashboard
