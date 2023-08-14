@@ -72,9 +72,12 @@ function buildCampgroundChart(parkCode) {
 function buildStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)
     .then((data) => {
-      let selectedParkCode = d3.select('select').node().value;
-      let park = data.data.find(obj => obj.parkCode === selectedParkCode);
+      //let selectedParkCode = d3.select('select').node().value;
+      //let park = data.data.filter(obj => obj.parkCode == selectedParkCode[0]);
       
+      let selectedParkCode = d3.select('select').node().value;
+      let park = data.data.find(obj => obj.parkCode == selectedParkCode);
+
       if (!park) {
         console.error('Park not found for the given code');
         return;
@@ -103,16 +106,21 @@ function buildStateBarChart(parkCode) {
         }
       };
 
+      // Update the bar chart container
+      //let barContainer = d3.select("#bar");
+      //barContainer.html(""); // Clear existing chart
+      //barContainer.append("div").attr("id", "bar");
+
       // Clear the existing chart
       const scatterContainer = d3.select("#b");
       scatterContainer.selectAll("*").remove();
       
-      Plotly.newPlot('bar', data, layout);
+      Plotly.newPlot('barState', data, layout);
     })
     .catch((error) => {
       console.error('Error fetching data:', error);
     });
-}
+} 
 
 /*/ Function to build the activities list
 function buildActivitiesList(parkCode) {
@@ -183,7 +191,7 @@ function initMap(parks) {
     const googleMapsLink = `https://www.google.com/maps?q=${park.latitude},${park.longitude}`;
     marker.bindPopup(`<b>${park.fullName}</b><br>Latitude: ${park.latitude}<br>Longitude: ${park.longitude}<br><a href="${googleMapsLink}" target="_blank">Open in Google Maps</a>`);
 });
-
+}
 
 // Fetch park data and initialize the map
 fetchData(PARKS_API_URL)
@@ -200,7 +208,7 @@ function optionChanged(newParkCode) {
   //buildAmenitiesList(newParkCode);
   //buildCampgroundChart(newParkCode);
   buildStateBarChart(newParkCode);
-};
+}; 
 
 // Initialize the dashboard
-init()};
+init();
