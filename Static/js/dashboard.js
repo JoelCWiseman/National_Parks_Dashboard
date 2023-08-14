@@ -97,8 +97,9 @@ function buildStateBarChart(parkCode) {
     .then((data) => {
 
 	//This the another way where the chart will change with the dropdown for the state that is with that park
-      let selectedParkCode = d3.select('select').node().value;
-      let park = data.data.find(obj => obj.parkCode == selectedParkCode);
+  let selectedParkCode = d3.select('select').node().value;
+  let park = data.data.filter(obj => obj.parkCode == selectedParkCode[0]);
+
 
       if (!park) {
         console.error('Park not found for the given code');
@@ -110,10 +111,13 @@ function buildStateBarChart(parkCode) {
       parkNumber = stateData.map(function (row){
         return row.amountOfParks
       });
+      stateNumber = stateData.map(function (row){
+        return row.State
+      });
       
       var stateBarChart = {
         x: parkNumber,
-        y: [stateCode],
+        y: stateNumber,
         type: 'bar',
         orientation: 'h'
       };
