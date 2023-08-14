@@ -202,4 +202,4 @@ function optionChanged(newParkCode) {
 };
 
 // Initialize the dashboard
-init();
+init()};
