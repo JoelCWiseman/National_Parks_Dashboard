@@ -399,3 +399,6 @@ ERROR:root:An error occurred while fetching data from the API: 429 Client Error:
 ERROR:root:An error occurred while fetching data from the API: 429 Client Error: Too Many Requests for url: https://developer.nps.gov/api/v1/parks?limit=450&api_key=rH5mHAFCMbzFjU142JRqAjKKYKWhP1gtphp9MRMS
 ERROR:root:An error occurred while fetching data from the API: 429 Client Error: Too Many Requests for url: https://developer.nps.gov/api/v1/parks?limit=450&api_key=rH5mHAFCMbzFjU142JRqAjKKYKWhP1gtphp9MRMS
 ERROR:root:An error occurred while creating the amenities database: table events has no column named eventID
+ERROR:root:An error occurred while fetching data from the API: 503 Server Error: Service Unavailable for url: https://developer.nps.gov/api/v1/parks?limit=450&api_key=yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw
+ERROR:root:An error occurred while fetching data from the API: 503 Server Error: Service Unavailable for url: https://developer.nps.gov/api/v1/campgrounds?limit=450&api_key=yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw
+ERROR:root:An error occurred while fetching data from the API: 503 Server Error: Service Unavailable for url: https://developer.nps.gov/api/v1/campgrounds?limit=450&api_key=yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw

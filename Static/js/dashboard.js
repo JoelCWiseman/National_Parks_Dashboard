@@ -30,7 +30,7 @@ function buildParkInfo(parkCode) {
     });
 }
 
-// Function to build campground info chart
+/*// Function to build campground info chart
 function buildCampgroundChart(parkCode) {
   fetchData(`${PARKS_API_URL}/${parkCode}/campgrounds`)
     .then((data) => {
@@ -66,46 +66,51 @@ function buildCampgroundChart(parkCode) {
 
       Plotly.newPlot("campground-bar-chart", barData, barLayout);
     });
-}
+} */
 
 // Function to make bubble chart
-function buildBubbleChart(parkCode) {
+function buildStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)
     .then((data) => {
       
       let choice = d3.select('select').node().value;
       let park = data.data.filter(obj=> obj.parkCode == choice)[0];
+      
+      let { stateCode } = park;
+      console.log(stateCode);
+      
 
-      let { stateCode, parkCode } = park;
-
-      var bubbleChart = {
+      var stateBarChart = {
         x: stateCode,
-        y: [0, 50, 100, 150, 200, 250, 300, 350, 400, 450],
-        mode: 'markers',
-        marker: {
-          size: [40, 60, 80, 100]
+        y: 0,
+        type: 'bar',
+        orientation: 'v'
+      }
+      
+      var data = [stateBarChart];
+
+      var layout = {
+        xaxis: {
+          type: 'category',
+          title: 'States',
+        },
+        yaxis: {
+          range: [0, 450],
+          title: 'Number of Parks per State'
         }
       };
-      
-      var data = [bubbleChart];
-      
-      var layout = {
-        title: 'National Parks by State',
-        showlegend: false,
-        height: 600,
-        width: 600
-      };
-      // Update the campground chart container
-      let bubbleContainer = d3.select("#bubble-chart");
-      bubbleContainer.html(""); // Clear existing chart
-      bubbleContainer.append("div").attr("id", "bubble-state-chart");
-      
-      
-      Plotly.newPlot('bubble', data, layout);
-    });
 
+     // Update the scatter chart container
+      let scatterContainer = d3.select("#scatter");
+      scatterContainer.html(""); // Clear existing chart
+      scatterContainer.append("div").attr("id", "scatter"); 
+      
+      
+      Plotly.newPlot('scatter', data, layout);
+    });
   }
-// Function to build the activities list
+
+/*/ Function to build the activities list
 function buildActivitiesList(parkCode) {
   fetchData(`${PARKS_API_URL}/${parkCode}/activities`)
     .then((data) => {
@@ -129,7 +134,7 @@ function buildAmenitiesList(parkCode) {
       const listItems = amenities.map(amenity => `<li>${amenity}</li>`);
       amenitiesList.append("ul").html(listItems.join(""));
     });
-}
+} */
 
 // Function to initialize the dashboard
 function init() {
@@ -151,9 +156,10 @@ function init() {
       // Use the first park from the list to build the initial panels
       let firstParkCode = parks[0].parkCode;
       buildParkInfo(firstParkCode);
-      buildActivitiesList(firstParkCode);
-      buildAmenitiesList(firstParkCode);
-	  buildCampgroundChart(firstParkCode);
+      //buildActivitiesList(firstParkCode);
+      //buildAmenitiesList(firstParkCode);
+	    //buildCampgroundChart(firstParkCode);
+      buildStateBarChart(firstParkCode);
     });
 }
 
@@ -185,10 +191,11 @@ fetchData(PARKS_API_URL)
 function optionChanged(newParkCode) {
   // Fetch new data each time a new park is selected
   buildParkInfo(newParkCode);
-  buildActivitiesList(newParkCode);
-  buildAmenitiesList(newParkCode);
-  buildCampgroundChart(newParkCode);
-}
+  //buildActivitiesList(newParkCode);
+  //buildAmenitiesList(newParkCode);
+  //buildCampgroundChart(newParkCode);
+  buildStateBarChart(newParkCode);
+};
 
 // Initialize the dashboard
 init();
