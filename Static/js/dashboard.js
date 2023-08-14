@@ -176,6 +176,7 @@ function initMap(parks) {
   // Add markers for each park
   parks.forEach(park => {
     const marker = L.circleMarker([park.latitude, park.longitude]).addTo(map);
+    const marker = L.circleMarker([park.latitude, park.longitude]).addTo(map);
     marker.bindPopup(`<b>${park.fullName}</b><br>Latitude: ${park.latitude}<br>Longitude: ${park.longitude}`);
   });
 }
