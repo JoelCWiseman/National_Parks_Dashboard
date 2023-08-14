@@ -68,6 +68,30 @@ function buildCampgroundChart(parkCode) {
     });
 } */
 
+// Function to fetch topics data
+function fetchTopics() {
+  return fetch('/api/get_topics')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const topicsList = document.getElementById('topicsList');
+
+      // Populate the topics list
+      data.data.forEach(topic => {
+        const listItem = document.createElement('div');
+        listItem.textContent = topic.name;
+        topicsList.appendChild(listItem);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching topics data:', error);
+    });
+}
+  
 // Function to make bar chart
 function buildStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)

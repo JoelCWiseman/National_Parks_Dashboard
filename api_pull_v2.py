@@ -15,8 +15,9 @@ API_KEY = "yk2ZpqETKnPX5C29VA8kIeI69VaReeb4K2RxUPbw"
 PARKS_API_URL = "https://developer.nps.gov/api/v1/parks?limit=450"
 #ACTIVITIES_API_URL = "https://developer.nps.gov/api/v1/activities/parks?limit=450"
 #AMENITIES_API_URL = "https://developer.nps.gov/api/v1/amenities?limit=450"
-CAMPGROUNDS_API_URL = "https://developer.nps.gov/api/v1/campgrounds?limit=450"
+#CAMPGROUNDS_API_URL = "https://developer.nps.gov/api/v1/campgrounds?limit=450"
 #EVENTS_API_URL = "https://developer.nps.gov/api/v1/events?limit=450"
+TOPICS_API_URL = "https://developer.nps.gov/api/v1/topics?limit=450"
 
 # Function to fetch data from the NPS API
 def fetch_data(api_url):
@@ -129,35 +130,63 @@ def create_parks_db():
    #     logging.error(f"An error occurred while creating the amenities database: {str(e)}")
 
 # Function to create the campgrounds database
-def create_campgrounds_db():
+#def create_campgrounds_db():
+#    try:
+#        connection = sqlite3.connect("campgrounds.db")
+#        cursor = connection.cursor()
+#
+#        cursor.execute('''
+#            CREATE TABLE IF NOT EXISTS campgrounds (
+#                parkCode TEXT PRIMARY KEY,
+#                campgroundName TEXT,
+#                description TEXT,
+#                campsites INTEGER
+#            )
+#        ''')
+#
+#        parks_data = fetch_data(CAMPGROUNDS_API_URL)
+#
+#        if parks_data and "data" in parks_data:
+#            for park in parks_data["data"]:
+#                park_code = park["parkCode"]
+#                cursor.execute('''
+#                    INSERT OR IGNORE INTO campgrounds (parkCode)
+#                    VALUES (?)
+#                ''', (park_code,))
+
+#        connection.commit()
+#        connection.close()
+#    except sqlite3.Error as e:
+#        logging.error(f"An error occurred while creating the campgrounds database: {str(e)}")
+
+# Function to create the topics database
+def create_topics_db():
     try:
-        connection = sqlite3.connect("campgrounds.db")
+        connection = sqlite3.connect("topics.db")
         cursor = connection.cursor()
 
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS campgrounds (
-                parkCode TEXT PRIMARY KEY,
-                campgroundName TEXT,
-                description TEXT,
-                campsites INTEGER
+            CREATE TABLE IF NOT EXISTS topics (
+                id TEXT PRIMARY KEY,
+                name TEXT
             )
         ''')
 
-        parks_data = fetch_data(CAMPGROUNDS_API_URL)
+        topics_data = fetch_data(TOPICS_API_URL)
 
-        if parks_data and "data" in parks_data:
-            for park in parks_data["data"]:
-                park_code = park["parkCode"]
+        if topics_data and "data" in topics_data:
+            for topic in topics_data["data"]:
                 cursor.execute('''
-                    INSERT OR IGNORE INTO campgrounds (parkCode)
-                    VALUES (?)
-                ''', (park_code,))
+                    INSERT OR IGNORE INTO topics (id, name)
+                    VALUES (?, ?)
+                ''', (topic["id"], topic["name"]))
 
         connection.commit()
         connection.close()
     except sqlite3.Error as e:
-        logging.error(f"An error occurred while creating the campgrounds database: {str(e)}")
+        logging.error(f"An error occurred while creating the topics database: {str(e)}")
 
+        
 # Function to create the events database
 #def create_events_db():
  #   try:
@@ -197,5 +226,6 @@ if __name__ == '__main__':
     create_parks_db()
    # create_activities_db()
     #create_amenities_db()
-    create_campgrounds_db()  
+    #create_campgrounds_db()  
    # create_events_db()
+    create_topics_db()

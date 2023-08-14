@@ -1,7 +1,7 @@
 import os
 import sqlite3
 import plotly
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
@@ -60,6 +60,20 @@ def get_parks():
         parks.append(park_dict)
     return jsonify({"data": parks})
 
+@app.route('/api/get_topics', methods=['GET'])
+def get_topics():
+    # Fetch all topics from your database
+    connection = sqlite3.connect("topics.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM topics")
+    all_topics = cursor.fetchall()
+    connection.close()
+
+    # Convert the topics to a list of dictionaries
+    topics = [{"id": topic[0], "name": topic[1]} for topic in all_topics]
+
+    return jsonify({"data": topics})
+    
 @app.route('/api/parks/<string:park_code>/campgrounds', methods=['GET']) 
 def get_campgrounds(park_code):
     campgrounds = fetch_campgrounds_for_park(park_code)
