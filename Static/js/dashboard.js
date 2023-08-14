@@ -72,9 +72,11 @@ function buildCampgroundChart(parkCode) {
 function buildStateBarChart(parkCode) {
   fetchData(`${PARKS_API_URL}`)
     .then((data) => {
+      //this is one way to make the chart where it's all the states at with each dropdown change
       //let selectedParkCode = d3.select('select').node().value;
       //let park = data.data.filter(obj => obj.parkCode == selectedParkCode[0]);
-      
+
+	//This the another way where the chart will change with the dropdown for the state that is with that park
       let selectedParkCode = d3.select('select').node().value;
       let park = data.data.find(obj => obj.parkCode == selectedParkCode);
 
